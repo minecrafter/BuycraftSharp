@@ -7,16 +7,7 @@ namespace BuycraftSharp
 {
 	public class BuycraftApi
 	{
-		public string ApiKey { get; }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="BuycraftSharp.BuycraftApi"/> class, with the specified API key.
-		/// </summary>
-		/// <param name="ApiKey">The Buycraft API key.</param>
-		public BuycraftApi (string ApiKey)
-		{
-			this.ApiKey = ApiKey;
-		}
+		public string ApiKey { get; set; }
 
 		/// <summary>
 		/// Authenticate with the Buycraft API.
@@ -30,7 +21,8 @@ namespace BuycraftSharp
 			parameters["version"] = BuycraftConstants.ApiRequestParameters.BuycraftVersion;
 			parameters["playersMax"] = BuycraftConstants.ApiRequestParameters.MaxPlayers;
 			parameters["serverPort"] = BuycraftConstants.ApiRequestParameters.MinecraftPort;
-			return JsonConvert.DeserializeObject<BuycraftApiResponses.AuthenticationPayload>(VerifySuccessfulRequest(MakeHttpRequest<BuycraftApiResponses.BaseBuycraftApiResponse>(CreateUriForRequest(parameters))));
+
+			return VerifySuccessfulRequest(MakeHttpRequest<BuycraftApiResponses.BaseBuycraftApiResponse<BuycraftApiResponses.AuthenticationPayload>>(CreateUriForRequest(parameters))).Payload;
 		}
 
 		/// <summary>
@@ -57,7 +49,7 @@ namespace BuycraftSharp
 
 			foreach (KeyValuePair<string, object> pair in parameters)
 			{
-				url += Uri.EscapeUriString(pair.Key) + "=" + Uri.EscapeUriString(pair.Value) + "&";
+				url += Uri.EscapeUriString(pair.Key) + "=" + Uri.EscapeUriString(pair.Value.ToString()) + "&";
 			}
 
 			url = url.Remove(url.Length - 1); // remove trailing &
@@ -79,7 +71,7 @@ namespace BuycraftSharp
 			}
 		}
 
-		private static BuycraftApiResponses.BaseBuycraftApiResponse VerifySuccessfulRequest(BuycraftApiResponses.BaseBuycraftApiResponse response)
+		private static BuycraftApiResponses.BaseBuycraftApiResponse<T> VerifySuccessfulRequest<T>(BuycraftApiResponses.BaseBuycraftApiResponse<T> response)
 		{
 			if (response.ErrorCode != BuycraftConstants.ErrorCodes.Success)
 			{

@@ -5,10 +5,6 @@ namespace BuycraftSharp
 {
 	public static class BuycraftApiResponses
 	{
-		private BuycraftApiResponses ()
-		{
-		}
-
 		/*
 		 * For a moment, I'd like to thank the Buycraft developers for giving
 		 * us yet MORE objects to deserialize! At least Json.NET is fast...
@@ -16,28 +12,20 @@ namespace BuycraftSharp
 		 * Well, on the other hand it /does/ make reply objects easier. So
 		 * there's one point for Buycraft.
 		 */
-		public static class BaseBuycraftApiResponse
+		public class BaseBuycraftApiResponse<T>
 		{
-			private BaseBuycraftApiResponse()
-			{
-			}
-
 			[JsonProperty("code")]
-			public int ErrorCode { get; }
+			public int ErrorCode { get; set; }
 			[JsonProperty("payload")]
-			public object Payload { get; }
+			public T Payload { get; set; }
 		}
 
-		public static class AuthenticationPayload
+		public class AuthenticationPayload
 		{
-			private AuthenticationPayload()
-			{
-			}
-
 			[JsonProperty("latestVersion")]
-			public string LatestVersion { get; }
+			public string LatestVersion { get; set; }
 			[JsonProperty("latestDownload")]
-			public string LatestPluginDownload { get; }
+			public string LatestPluginDownload { get; set; }
 		}
 	}
 }
