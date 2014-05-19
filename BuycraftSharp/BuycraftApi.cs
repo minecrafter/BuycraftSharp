@@ -7,6 +7,10 @@ namespace BuycraftSharp
 {
 	public class BuycraftApi
 	{
+		/// <summary>
+		/// Gets or sets the Buycraft API key.
+		/// </summary>
+		/// <value>The Buycraft API key.</value>
 		public string ApiKey { get; set; }
 
 		/// <summary>
