@@ -79,7 +79,7 @@ namespace BuycraftSharp
 			}
 		}
 
-		private static void VerifySuccessfulRequest(BuycraftApiResponses.BaseBuycraftApiResponse response)
+		private static BuycraftApiResponses.BaseBuycraftApiResponse VerifySuccessfulRequest(BuycraftApiResponses.BaseBuycraftApiResponse response)
 		{
 			if (response.ErrorCode != BuycraftConstants.ErrorCodes.Success)
 			{
