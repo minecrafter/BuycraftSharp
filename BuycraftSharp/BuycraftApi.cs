@@ -14,19 +14,27 @@ namespace BuycraftSharp
 		public string ApiKey { get; set; }
 
 		/// <summary>
-		/// Authenticate with the Buycraft API.
+		/// Fetch information about the store and the user of the API key.
 		/// </summary>
-		/// <returns>The authentication reply from the Buycraft API.</returns>
-		public BuycraftApiResponses.AuthenticationPayload Authenticate()
+		/// <returns>The info reply from the Buycraft API.</returns>
+		public BuycraftApiResponses.InformationPayload Information()
 		{
 			IDictionary<string, object> parameters = CreateBaseParameters();
 			parameters["action"] = "info";
-			parameters["onlineMode"] = BuycraftConstants.ApiRequestParameters.OnlineMode;
-			parameters["version"] = BuycraftConstants.ApiRequestParameters.BuycraftVersion;
-			parameters["playersMax"] = BuycraftConstants.ApiRequestParameters.MaxPlayers;
-			parameters["serverPort"] = BuycraftConstants.ApiRequestParameters.MinecraftPort;
 
-			return VerifySuccessfulRequest(MakeHttpRequest<BuycraftApiResponses.BaseBuycraftApiResponse<BuycraftApiResponses.AuthenticationPayload>>(CreateUriForRequest(parameters))).Payload;
+			return FetchPayload(MakeHttpRequest<BuycraftApiResponses.BaseBuycraftApiResponse<BuycraftApiResponses.InformationPayload>>(CreateUriForRequest(parameters)));
+		}
+
+		/// <summary>
+		/// Fetch information about all categories.
+		/// </summary>
+		/// <returns>The categories from the Buycraft API.</returns>
+		public ICollection<BuycraftApiResponses.Category> Categories()
+		{
+			IDictionary<string, object> parameters = CreateBaseParameters();
+			parameters["action"] = "categories";
+
+			return FetchPayload(MakeHttpRequest<BuycraftApiResponses.BaseBuycraftApiResponse<List<BuycraftApiResponses.Category>>>(CreateUriForRequest(parameters)));
 		}
 
 		/// <summary>
@@ -36,7 +44,6 @@ namespace BuycraftSharp
 		private IDictionary<string, object> CreateBaseParameters()
 		{
 			IDictionary<string, object> dictionary = new Dictionary<string, object>();
-			dictionary["playersOnline"] = BuycraftConstants.ApiRequestParameters.PlayersOnline;
 			dictionary["secret"] = ApiKey;
 			return dictionary;
 		}
@@ -82,6 +89,11 @@ namespace BuycraftSharp
 				throw new Exception("Error from Buycraft: " + response.ErrorCode);
 			}
 			return response;
+		}
+
+		private static T FetchPayload<T>(BuycraftApiResponses.BaseBuycraftApiResponse<T> response)
+		{
+			return VerifySuccessfulRequest(response).Payload;
 		}
 	}
 }

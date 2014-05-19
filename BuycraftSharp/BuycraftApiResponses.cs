@@ -13,7 +13,7 @@ namespace BuycraftSharp
 			public T Payload { get; set; }
 		}
 
-		public class AuthenticationPayload
+		public class InformationPayload
 		{
 			/// <summary>
 			/// The latest version of the Buycraft plugin.
@@ -51,6 +51,35 @@ namespace BuycraftSharp
 			/// <value>Unknown.</value>
 			[JsonProperty("updateUsernameInterval")]
 			public int UpdateUsernameInterval { get; set; }
+		}
+
+		// {"id":207426,"name":"Lifetime Premium","shortDescription":"","guiItemId":54}
+		public class Category
+		{
+			/// <summary>
+			/// The ID of the category.
+			/// </summary>
+			/// <value>The ID for this category.</value>
+			[JsonProperty("id")]
+			public int Id { get; set; }
+			/// <summary>
+			/// The name of this category.
+			/// </summary>
+			/// <value>The name for this category.</value>
+			[JsonProperty("name")]
+			public string Name { get; set; }
+			/// <summary>
+			/// The description for this category.
+			/// </summary>
+			/// <value>The description for this category.</value>
+			[JsonProperty("shortDescription")]
+			public string Description { get; set; }
+			/// <summary>
+			/// The Minecraft item ID for this item, used as part of the Buycraft in-game GUI.
+			/// </summary>
+			/// <value>The Minecraft item ID.</value>
+			[JsonProperty("guiItemId")]
+			public int MinecraftItemId { get; set; }
 		}
 	}
 }
